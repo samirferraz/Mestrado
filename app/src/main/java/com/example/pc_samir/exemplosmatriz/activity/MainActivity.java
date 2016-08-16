@@ -1,127 +1,99 @@
 package com.example.pc_samir.exemplosmatriz.activity;
 
-import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.widget.TextView;
 
 import com.example.pc_samir.exemplosmatriz.R;
+import com.example.pc_samir.exemplosmatriz.fragment.MainFragment;
+import com.example.pc_samir.exemplosmatriz.fragment.MatrixColorFragment;
 import com.example.pc_samir.exemplosmatriz.logic.Calculator;
-import com.example.pc_samir.exemplosmatriz.view.MatrixColorView;
-
-import Jama.Matrix;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final int D = 20;
-    private TextView text1;
-    private TextView text2;
-    private TextView textResult;
-    private MatrixColorView viewMatrix;
+
+    double[][] vReal = new double[][]{
+            {30.5099}, {0.0920}, {0.2015},
+            {0.0187},{0.0279}, {0.0250},
+            {0.0145}, {0.0175}, {0.0166}};
+
+    private Calculator calculator;
+
+    private void calculateMatrixV() {
+        int oT = 3, pT = 3;
+        double[] arrayXi = new double[3];
+        for (int i = 0; i < arrayXi.length; i++) {
+            arrayXi[i] = D * i + D / 2;
+        }
+
+        calculator = new Calculator(arrayXi, vReal, oT, pT);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        text1 = (TextView) findViewById(R.id.text1);
-        text2 = (TextView) findViewById(R.id.text2);
-        textResult = (TextView) findViewById(R.id.text_result);
-        viewMatrix = (MatrixColorView) findViewById(R.id.view_matrix);
-        matrizV();
-        invert();
+        calculateMatrixV();
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+        ViewPager pager = (ViewPager) findViewById(R.id.viewpager);
+
+        MyPagerAdapter adapter = new MyPagerAdapter(getSupportFragmentManager());
+        pager.setAdapter(adapter);
+
+        tabLayout.setupWithViewPager(pager);
     }
 
-    private void matrizV() {
-        double[] arrayXi = new double[3];
-        double[] g = new double[3];
-        for (int i = 0; i < arrayXi.length; i++) {
-            arrayXi[i] = D *i + D /2;
-            g[i] = 10;
-        }
-        g[1] = 20;
+    private class MyPagerAdapter extends FragmentPagerAdapter {
 
-        Calculator calc = new Calculator(arrayXi, g, 3, 3);
-        Matrix V = calc.getV();
+        private MatrixColorFragment matrixColorFragment;
+        private MainFragment mainFragment;
 
-        printOnMatrixView(V.getArray());
-
-        printMatrix(V, text1);
-        printMatrix(calc.getG(), text2);
-        printMatrix(calc.getA().times(V), textResult);
-    }
-
-    private void printOnMatrixView(double[][] arr) {
-        int[][] mtx = new int[arr.length][arr[0].length];
-        for (int i = 0; i < mtx.length; i++) {
-            for (int j = 0; j < mtx[i].length; j++) {
-                int i1 = 255 - (int)(arr[i][j] * 255/.085);
-                mtx[i][j] = Color.argb(i1, 255,0,0);
-                Log.d("Color: "+ i + "," + j, Integer.toHexString(mtx[i][j]));
-           }
-        }
-        viewMatrix.setColors(mtx);
-    }
-
-    private void invert(){
-
-        int c = 0;
-        int k = 0;
-        while (k < 10){
-            k = k + 1;
+        public MyPagerAdapter(FragmentManager fm) {
+            super(fm);
         }
 
-    }
-
-    private void printResult() {
-
-    // teste--------------------------------------------------------------------
-        double[][] arrayM1 = new double[2][2];
-        double[][] arrayM2 = new double[2][2];
-        double[][] arrayM3 = new double[2][2];
-        for (int i = 0; i < arrayM1.length; i++) {
-            for (int j = 0; j < arrayM1[i].length; j++) {
-                arrayM1[i][j] = 1;
-                arrayM2[i][j] = 2;
-                arrayM3[i][j] = 3;
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    matrixColorFragment = new MatrixColorFragment();
+                    matrixColorFragment.setCalculator(calculator);
+                    return matrixColorFragment;
+                case 1:
+                    mainFragment = new MainFragment();
+                    mainFragment.setCalculator(calculator);
+                    return mainFragment;
+                case 2:
+                    return new Fragment();
+                default:
+                    return null;
             }
         }
 
-        arrayM1 [1][1] = 2;//Math.atan(0.1);
-        arrayM3 [0][0] = 1;
-        arrayM3 [0][1] = 2;
-        arrayM3 [1][0] = 3;
-        arrayM3 [1][1] = 4;
-        double l = 2;
-
-        Matrix m1 = new Matrix (arrayM1);
-        Matrix m2 = new Matrix (arrayM2);
-        Matrix m3 = new Matrix (arrayM3);
-        //m3 = (Matrix.identity(2,2)).times(50);
-
-    //Chama Método printMatrix ------------------------------------------------------------------------
-
-        //printMatrix(m1, text1); // igual a printMatrix(arrayM1, text1);
-        //printMatrix(m2, text2); // printMatrix(m2, text2);
-        //printMatrix(m1.times(m2.times(m3.transpose())).times(Math.pow(l,2)), textResult);//times(m2), textResult);
-
-    }
-
-    //Cria Método printMatrix que recebe um Array e imprime
-    private void printMatrix(double[][] m, TextView tr) {
-        tr.append("\n\n");
-        // \t = tab, \n = enter
-        for (int i = 0; i < m.length; i++) {
-            for (int j = 0; j < m[i].length; j++) {
-                tr.append(String.format("  %.04f\t  ",m[i][j]));
-            }
-            tr.append("\n");
+        @Override
+        public int getCount() {
+            return 3;
         }
-    }
 
-    //Possibilita que objetos Matrix sejam convertidos em Array e chama o Método printMatrix
-    private void printMatrix(Matrix m, TextView tr) {
-        printMatrix(m.getArray(), tr);
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return "Blocks";
+                case 1:
+                    return "Matrix";
+                case 2:
+                    return "Blank";
+                default:
+                    return null;
+            }
+        }
     }
 }

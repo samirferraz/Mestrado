@@ -15,23 +15,24 @@ public class Calculator {
     final double e = 0.01;
 
     private final double[] arrayXi;
+    private final Matrix VReal;
     private Matrix G;
     private final int oT;
     private final int pT;
 
     private double lo = 0.1;
-    private static final double TOL = 0.002;
+    private static final double TOL = 0.00002;
 
     private final Matrix A;
     private Matrix V;
 
-
-    public Calculator(double[] arrayXi, double[] g, int oT, int pT) {
+    public Calculator(double[] arrayXi, double[][] vReal, int oT, int pT) {
         this.arrayXi = arrayXi;
-        this.G = new Matrix(g, g.length);
         this.oT = oT;
         this.pT = pT;
         A = calculateMatrixA();
+        this.VReal = new Matrix(vReal);
+        this.G = A.times(VReal);
         calculateV();
     }
 
@@ -103,5 +104,9 @@ public class Calculator {
 
     public Matrix getG() {
         return G;
+    }
+
+    public Matrix getVReal() {
+        return VReal;
     }
 }

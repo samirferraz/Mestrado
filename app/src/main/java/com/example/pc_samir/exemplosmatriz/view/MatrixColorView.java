@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 /**
@@ -36,12 +35,19 @@ public class MatrixColorView extends View {
             int h = getHeight() / colors[0].length;
             int w = getWidth() / colors.length;
 
+            /*for (int i = 0; i < 2; i++) {
+                for (int j = 0; j < 2; j++) {
+                    p.setColor(colors[i][i*3 + j]);
+                    r.set(w * i, h * j, w * (i + 1), h * (j + 1));
+                    canvas.drawRect(r, p);
+                    Log.d("RECT(" + i + "," + j + ")",r.flattenToString()); */
+
             for (int i = 0; i < colors.length; i++) {
                 for (int j = 0; j < colors[i].length; j++) {
                     p.setColor(colors[i][j]);
                     r.set(w * i, h * j, w * (i + 1), h * (j + 1));
                     canvas.drawRect(r, p);
-                    Log.d("RECT(" + i + "," + j + ")",r.flattenToString());
+                    //Log.d("RECT(" + i + "," + j + ")",r.flattenToString());
                 }
             }
         }
