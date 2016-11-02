@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.pc_samir.exemplosmatriz.R;
+import com.example.pc_samir.exemplosmatriz.fragment.LocationFragment;
 import com.example.pc_samir.exemplosmatriz.fragment.MainFragment;
 import com.example.pc_samir.exemplosmatriz.fragment.MatrixColorFragment;
 import com.example.pc_samir.exemplosmatriz.logic.Calculator;
@@ -19,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
     double[][] vReal = new double[][]{
             {30.5099}, {0.0920}, {0.2015},
-            {0.0187},{0.0279}, {0.0250},
+            {0.0187}, {0.0279}, {0.0250},
             {0.0145}, {0.0175}, {0.0166}};
 
     private Calculator calculator;
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                     mainFragment.setCalculator(calculator);
                     return mainFragment;
                 case 2:
-                    return new Fragment();
+                    return new LocationFragment();
                 default:
                     return null;
             }
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                 case 1:
                     return "Matrix";
                 case 2:
-                    return "Blank";
+                    return "Location";
                 default:
                     return null;
             }
