@@ -42,7 +42,7 @@ public class Interpolator {
                 final double latitude = top + dx * i / o;
                 final double longitude = left + dy * j / p;
                 final double gravity = getGravityForPoint(latitude, longitude, points);
-                ret[i][j] = new GravityPoint(latitude, longitude, gravity);
+                ret[i][j] = new GravityPoint(latitude, longitude, 0, gravity);
             }
         }
 

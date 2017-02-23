@@ -12,10 +12,10 @@ import org.junit.Test;
 public class InterpolatorTest {
 
     private static final GravityPoint[] POINTS = {
-            new GravityPoint(0, 0, 1),
-            new GravityPoint(1, 2, 1),
-            new GravityPoint(0, 2, 1),
-            new GravityPoint(1, 0, 1)
+            new GravityPoint(0, 0, 0, 1),
+            new GravityPoint(1, 2, 0, 1),
+            new GravityPoint(0, 2, 0, 1),
+            new GravityPoint(1, 0, 0, 1)
     };
 
     @Test

@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.example.pc_samir.exemplosmatriz.R;
 import com.example.pc_samir.exemplosmatriz.logic.Calculator;
+import com.example.pc_samir.exemplosmatriz.logic.Interpolator;
+import com.example.pc_samir.exemplosmatriz.model.GravityPoint;
 
 import Jama.Matrix;
 
@@ -23,6 +25,16 @@ public class MainFragment extends Fragment {
     private TextView textResult;
     private Calculator calculator;
 
+
+    private static final GravityPoint[] POINTS = {
+            new GravityPoint(0, 0, 0, 1),
+            new GravityPoint(0, 1, 0, 2),
+            new GravityPoint(0, 2, 0, 3),
+            new GravityPoint(1, 0, 0, 1),
+            new GravityPoint(1, 1, 0, 2),
+            new GravityPoint(1, 2, 0, 3)
+    };
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -32,8 +44,14 @@ public class MainFragment extends Fragment {
         text2 = (TextView) v.findViewById(R.id.text2);
         textResult = (TextView) v.findViewById(R.id.text_result);
 
-        if (calculator != null)
-            printResult();
+        GravityPoint[][] result = Interpolator.getGravityMatrix(POINTS);
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 5; j++) {
+                text1.append("\n" + result[i][j]);
+            }
+        }
+//        if (calculator != null)
+//            printResult();
 
         return v;
     }

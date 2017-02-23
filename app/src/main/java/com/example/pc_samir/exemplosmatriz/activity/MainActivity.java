@@ -13,6 +13,7 @@ import com.example.pc_samir.exemplosmatriz.fragment.LocationFragment;
 import com.example.pc_samir.exemplosmatriz.fragment.MainFragment;
 import com.example.pc_samir.exemplosmatriz.fragment.MatrixColorFragment;
 import com.example.pc_samir.exemplosmatriz.logic.Calculator;
+import com.example.samirferraz.myapplication.AltitudeActivityFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -73,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
                     return mainFragment;
                 case 2:
                     return new LocationFragment();
+                case 3:
+                    return new AltitudeActivityFragment();
                 default:
                     return null;
             }
@@ -80,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return 3;
+            return 4;
         }
 
         @Override
@@ -92,6 +95,8 @@ public class MainActivity extends AppCompatActivity {
                     return "Matrix";
                 case 2:
                     return "Location";
+                case 3:
+                    return "Altitude";
                 default:
                     return null;
             }
